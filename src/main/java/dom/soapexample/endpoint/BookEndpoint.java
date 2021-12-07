@@ -34,11 +34,15 @@ public class BookEndpoint {
     public GetBookResponse getBook(@RequestPayload GetBookRequest request) {
 
         GetBookResponse response = new GetBookResponse();
-
         Book book = bookRepository.findBook(request.getTitle());
-        if (book == null) {
-            throw new BookNotFoundException("Book not found " + request.getTitle());
-        } //fix this - add better ex handling and logging
+
+        //fix this - add better ex handling and logging
+        //Exception requires fault code and namespace uri
+        //Book details are not being returned
+
+        //if (book == null) {
+        //    throw new BookNotFoundException("Book not found " + request.getTitle());
+        //}
         response.setBook(book);
 
         return response;
