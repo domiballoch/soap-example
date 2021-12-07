@@ -1,5 +1,6 @@
 package dom.soapexample.endpoint;
 
+import com.soap.jaxb.Book;
 import com.soap.jaxb.GetBookRequest;
 import com.soap.jaxb.GetBookResponse;
 import dom.soapexample.exception.BookNotFoundException;
@@ -31,11 +32,20 @@ public class BookEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getBookRequest")
     @ResponsePayload
     public GetBookResponse getBook(@RequestPayload GetBookRequest request) {
+
         GetBookResponse response = new GetBookResponse();
-        if (response == null)
+
+        Book book = bookRepository.findBook(request.getTitle());
+        if (book == null) {
             throw new BookNotFoundException("Book not found " + request.getTitle());
-        response.setBook(bookRepository.findBook(request.getTitle()));
+        } //fix this - add better ex handling and logging
+        response.setBook(book);
 
         return response;
     }
+
+    //add get all books, create, delete and update
+    //add service class
+    //fix security
+    //add tests
 }
