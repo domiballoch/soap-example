@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.soap.com/jaxb"
+           targetNamespace="http://www.soap.com/jaxb" elementFormDefault="qualified">
+
+    <xs:element name="getBookRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="title" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getBookResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="book" type="tns:book"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="book">
+        <xs:sequence>
+            <xs:element name="isbn" type="xs:long"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="author" type="xs:string"/>
+            <xs:element name="category" type="tns:category"/>
+            <xs:element name="price" type="xs:decimal"/>
+            <xs:element name="stock" type="xs:integer"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="category">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FICTION"/>
+            <xs:enumeration value="FANTASY"/>
+            <xs:enumeration value="HORROR"/>
+            <xs:enumeration value="KIDS"/>
+            <xs:enumeration value="ROMANCE"/>
+            <xs:enumeration value="SCIENCE_FICTION"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
