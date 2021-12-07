@@ -29,6 +29,7 @@ public class WebServiceConfig extends WsConfigurerAdapter{
     }
 
     //WSDL: http://localhost:8080/ws/books?wsdl
+    //Request URL: http://localhost:8080/ws
     @Bean(name = "books")
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema booksSchema) {
         DefaultWsdl11Definition definition = new DefaultWsdl11Definition();
@@ -40,7 +41,7 @@ public class WebServiceConfig extends WsConfigurerAdapter{
     }
 
     @Bean
-    public XsdSchema coursesSchema() {
+    public XsdSchema booksSchema() {
         return new SimpleXsdSchema(new ClassPathResource("book-details.xsd"));
     }
 

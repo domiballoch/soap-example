@@ -32,10 +32,9 @@ public class BookEndpoint {
     @ResponsePayload
     public GetBookResponse getBook(@RequestPayload GetBookRequest request) {
         GetBookResponse response = new GetBookResponse();
-        response.setBook(bokRepository.findBook(request.getTitle()));
-
         if (response == null)
             throw new BookNotFoundException("Book not found " + request.getTitle());
+        response.setBook(bokRepository.findBook(request.getTitle()));
 
         return response;
     }
