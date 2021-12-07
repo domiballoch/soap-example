@@ -15,11 +15,11 @@ public class BookEndpoint {
 
     private static final String NAMESPACE_URI = "http://www.soap.com/jaxb";
 
-    private final BookRepository bokRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
-    public BookEndpoint(BookRepository bokRepository) {
-        this.bokRepository = bokRepository;
+    public BookEndpoint(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     /**
@@ -34,7 +34,7 @@ public class BookEndpoint {
         GetBookResponse response = new GetBookResponse();
         if (response == null)
             throw new BookNotFoundException("Book not found " + request.getTitle());
-        response.setBook(bokRepository.findBook(request.getTitle()));
+        response.setBook(bookRepository.findBook(request.getTitle()));
 
         return response;
     }
