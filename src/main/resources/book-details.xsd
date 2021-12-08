@@ -5,7 +5,7 @@
     <xs:element name="getBookRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="title" type="xs:string"/>
+                <xs:element name="title" type="xs:string" nillable="false"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
