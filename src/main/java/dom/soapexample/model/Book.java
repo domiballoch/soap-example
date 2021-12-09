@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 @ToString(of = {"isbn", "category", "title", "author", "price", "stock"})
 public class Book implements Serializable {
 
+    //for when service is implemented
     private Long isbn;
     private Category category;
-    @NotEmpty(message = "Title must not be empty")
     private String title;
     private String author;
     private BigDecimal price;
