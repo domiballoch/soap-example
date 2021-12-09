@@ -2,6 +2,7 @@ package dom.soapexample.utils;
 
 import com.soap.jaxb.Book;
 import dom.soapexample.config.JaxbConfig;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -33,8 +34,9 @@ public class ConverterUtilsTest {
     }
 
     @Disabled
+    @SneakyThrows
     @Test
-    public void convertXMLToObject_withBean_Test() throws IOException, JAXBException {
+    public void convertXMLToObject_withBean_Test() {
         String actual = TestUtils.getXmlFromClasspath(request);
         Book result = ConverterUtils.convertXMLToObject_withBean(actual);
 
@@ -42,8 +44,9 @@ public class ConverterUtilsTest {
     }
 
     @Disabled
+    @SneakyThrows
     @Test
-    public void convertObjectToXML_withBean_Test() throws JAXBException, IOException {
+    public void convertObjectToXML_withBean_Test() {
         Book actual = TestUtils.getXmlFromClasspath_ConvertToObject(request);
         String result = ConverterUtils.convertObjectToXML_withBean(TestUtils.createBook());
 
