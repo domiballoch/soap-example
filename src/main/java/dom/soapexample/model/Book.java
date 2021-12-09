@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import javax.validation.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
