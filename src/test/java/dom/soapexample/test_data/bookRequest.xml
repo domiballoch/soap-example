@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:gs="http://www.soap.com/jaxb">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <gs:getBookRequest>
+            <gs:title>Harry Potter</gs:title>
+        </gs:getBookRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

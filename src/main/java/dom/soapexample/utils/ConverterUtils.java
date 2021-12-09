@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -15,7 +16,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 @Slf4j
-@UtilityClass
+@Component
+//@UtilityClass
 public class ConverterUtils extends ApplicationContextUtils {
 
     //Simple way - one type
@@ -89,14 +91,17 @@ public class ConverterUtils extends ApplicationContextUtils {
 
     //----- METHODS USING JAXB CONTEXT BEAN -----//
 
-    @Qualifier("book")
     @Autowired
     private JaxbConfig jaxbConfig;
+
+    @Qualifier("book")
+    @Autowired
+    private JAXBContext bookJaxbContext;
 
     public static <T> T convertXMLToObject_withBean(String xml) throws JAXBException {
         log.info("Unmarshalling XML to Object: ", xml);
 
-        Unmarshaller unmarshallerNonStatic = jaxbConfig.bookJaxbContext().createUnmarshaller();
+        //Unmarshaller unmarshallerNonStatic = jaxbConfig.bookJaxbContext().createUnmarshaller();
         Unmarshaller unmarshallerStatic = applicationContext.getBean(JaxbConfig.class).bookJaxbContext().createUnmarshaller();
 
         StringReader stringReader = new StringReader(xml);
@@ -109,7 +114,7 @@ public class ConverterUtils extends ApplicationContextUtils {
         log.info("Marshalling Object to XML: {}", object);
         StringWriter stringWriter = new StringWriter();
 
-        Marshaller marshallerNonStatic = jaxbConfig.bookJaxbContext().createMarshaller();
+        //Marshaller marshallerNonStatic = jaxbConfig.bookJaxbContext().createMarshaller();
         Marshaller marshallerStatic = applicationContext.getBean(JaxbConfig.class).bookJaxbContext().createMarshaller();
         marshallerStatic.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
