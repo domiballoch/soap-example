@@ -90,9 +90,6 @@ public class ConverterUtils extends ApplicationContextUtils {
 
     //----- METHODS USING JAXB CONTEXT BEAN -----//
 
-    @Autowired
-    private JaxbConfig jaxbConfig;
-
     @Qualifier("book")
     @Autowired
     private JAXBContext bookJaxbContext;
@@ -100,7 +97,7 @@ public class ConverterUtils extends ApplicationContextUtils {
     public static <T> T convertXMLToObject_withBean(String xml) throws JAXBException {
         log.info("Unmarshalling XML to Object: ", xml);
 
-        //Unmarshaller unmarshallerNonStatic = jaxbConfig.bookJaxbContext().createUnmarshaller();
+        //Unmarshaller unmarshallerNonStatic = bookJaxbContext().createUnmarshaller();
         Unmarshaller unmarshallerStatic = applicationContext.getBean(JaxbConfig.class).bookJaxbContext().createUnmarshaller();
 
         StringReader stringReader = new StringReader(xml);
@@ -113,7 +110,7 @@ public class ConverterUtils extends ApplicationContextUtils {
         log.info("Marshalling Object to XML: {}", object);
         StringWriter stringWriter = new StringWriter();
 
-        //Marshaller marshallerNonStatic = jaxbConfig.bookJaxbContext().createMarshaller();
+        //Marshaller marshallerNonStatic = bookJaxbContext().createMarshaller();
         Marshaller marshallerStatic = applicationContext.getBean(JaxbConfig.class).bookJaxbContext().createMarshaller();
         marshallerStatic.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
