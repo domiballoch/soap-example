@@ -13,7 +13,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.xml.bind.JAXBException;
-import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
