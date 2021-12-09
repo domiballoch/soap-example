@@ -47,6 +47,7 @@ public class BookEndpoint {
         return response; //TODO:fix this - Book response is null?
     }
 
+    //add xml validation for request
     //add get all books, create, delete and update
     //add service class
     //fix security
