@@ -44,7 +44,7 @@ public class BookEndpoint {
         response.setBook(book);
         log.info("Returning book response: {}", response.getBook());
 
-        return response; //fix this - Book response is null?
+        return response; //TODO:fix this - Book response is null?
     }
 
     //add get all books, create, delete and update
