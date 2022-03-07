@@ -1,16 +1,25 @@
 package dom.soapexample.utils;
 
 import com.soap.jaxb.Book;
+import com.soap.jaxb.ObjectFactory;
 import dom.soapexample.config.JaxbConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -94,23 +103,22 @@ public class ConverterUtils extends ApplicationContextUtils {
     @Autowired
     private JAXBContext bookJaxbContext;
 
-    public static <T> T convertXMLToObject_withBean(String xml) throws JAXBException {
+    @Autowired
+    private JAXBContext jaxbContext;
+
+    public static <T> T convertXMLToObject_withBean(String xml) throws JAXBException, SOAPException, IOException {
         log.info("Unmarshalling XML to Object: ", xml);
-
-        //Unmarshaller unmarshallerNonStatic = bookJaxbContext().createUnmarshaller();
-        Unmarshaller unmarshallerStatic = applicationContext.getBean(JaxbConfig.class).bookJaxbContext().createUnmarshaller();
-
-        StringReader stringReader = new StringReader(xml);
-        unmarshallerStatic.unmarshal(stringReader);
-        log.info("Unmarshalled XML as Object: {}", stringReader);
-        return (T) stringReader;
+        SOAPMessage message = MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(xml.getBytes()));
+        Unmarshaller unmarshallerStatic = applicationContext.getBean(JaxbConfig.class).jaxbContext().createUnmarshaller();
+        Object object = unmarshallerStatic.unmarshal(message.getSOAPBody().extractContentAsDocument());
+        log.info("Unmarshalled XML as Object: {}", object);
+        return (T) object;
     }
 
     public static <T> String convertObjectToXML_withBean(T object) throws JAXBException {
         log.info("Marshalling Object to XML: {}", object);
         StringWriter stringWriter = new StringWriter();
 
-        //Marshaller marshallerNonStatic = bookJaxbContext().createMarshaller();
         Marshaller marshallerStatic = applicationContext.getBean(JaxbConfig.class).bookJaxbContext().createMarshaller();
         marshallerStatic.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 

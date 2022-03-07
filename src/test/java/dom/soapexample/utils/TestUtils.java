@@ -5,6 +5,7 @@ import com.soap.jaxb.Book;
 import com.soap.jaxb.Category;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.io.Resource;
+import org.springframework.util.ResourceUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,11 +14,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 
 @UtilityClass
 public class TestUtils {
 
     /**
+     * Not used -
      * Creates one Book (JAXB Object) for testing
      *
      * @return
@@ -50,21 +53,6 @@ public class TestUtils {
     }
 
     /**
-     * Returns Book object from XML
-     *
-     * @param request
-     * @return
-     * @throws IOException - unhandled for readability (learning purposes)
-     */
-    protected Book getXmlFromClasspath_ConvertToObject(Resource request) throws IOException {
-        XmlMapper xmlMapper = new XmlMapper();
-        String xml = getXmlFromClasspath(request);
-        Book value = xmlMapper.readValue(xml, Book.class);
-
-        return value;
-    }
-
-    /**
      * Returns XML from classpath as String
      *
      * @param request
@@ -77,4 +65,48 @@ public class TestUtils {
 
         return xml;
     }
+
+    /**
+     * Gets file from resources and converts to String
+     *
+     * @param fileName
+     * @return
+     * @throws IOException
+     */
+    protected String getResourceFile(String fileName) throws IOException {
+        File file = ResourceUtils.getFile(fileName);
+        return new String(Files.readAllBytes(file.toPath()));
+    }
+
+    /**
+     * Not used -
+     * Returns Book object from XML
+     *
+     * @param request
+     * @return
+     * @throws IOException - unhandled for readability (learning purposes)
+     */
+    protected Book convertResourceToObject(Resource request) throws IOException {
+        XmlMapper xmlMapper = new XmlMapper();
+        String xml = getXmlFromClasspath(request);
+        Book value = xmlMapper.readValue(xml, Book.class);
+
+        return value;
+    }
+
+    /**
+     * Returns Book object from XML using getResourceFile
+     *
+     * @param request
+     * @return
+     * @throws IOException - unhandled for readability (learning purposes)
+     */
+    protected Book convertStringToObject(String request) throws IOException {
+        XmlMapper xmlMapper = new XmlMapper();
+        String xml = getResourceFile(request);
+        Book value = xmlMapper.readValue(xml, Book.class);
+
+        return value;
+    }
+
 }

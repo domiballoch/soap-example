@@ -1,6 +1,10 @@
 package dom.soapexample.config;
 
 import com.soap.jaxb.Book;
+import com.soap.jaxb.Category;
+import com.soap.jaxb.GetBookRequest;
+import com.soap.jaxb.GetBookResponse;
+import com.soap.jaxb.ObjectFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,7 +23,11 @@ public class JaxbConfig {
     @Bean
     public JAXBContext jaxbContext() throws JAXBException {
         return JAXBContext.newInstance(
-                Book.class
+                Book.class,
+                GetBookRequest.class,
+                GetBookResponse.class,
+                Category.class,
+                ObjectFactory.class
                 //add more here...
         );
     }

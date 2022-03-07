@@ -1,6 +1,7 @@
 package dom.soapexample.utils;
 
 import com.soap.jaxb.Book;
+import com.soap.jaxb.GetBookRequest;
 import dom.soapexample.config.JaxbConfig;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.xml.bind.JAXBException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,8 +28,9 @@ public class ConverterUtilsTest {
     @Autowired
     private ConverterUtils converterUtils;
 
-    //TODO: file not being found
-    @Value(value = "classpath:test_data/bookRequest.xml")
+    private static final String REQUEST = "classpath:bookRequest.xml";
+
+    @Value(value = "classpath:bookRequest.xml")
     private Resource request;
 
     @BeforeEach
@@ -32,24 +39,42 @@ public class ConverterUtilsTest {
         ReflectionTestUtils.setField(converterUtils, "bookJaxbContext", jaxbConfig.bookJaxbContext());
     }
 
-    @Disabled
     @SneakyThrows
     @Test
     public void convertXMLToObject_withBean_Test() {
-        String actual = TestUtils.getXmlFromClasspath(request);
-        Book result = ConverterUtils.convertXMLToObject_withBean(actual);
+        String request = TestUtils.getResourceFile(REQUEST);
+        GetBookRequest result = ConverterUtils.convertXMLToObject_withBean(request);
 
-        assertThat(result).isEqualTo(actual);
+        assertThat(result.getTitle()).isEqualTo("Harry Potter");
     }
 
-    @Disabled
+    @Disabled //TODO:fix-UnrecognizedPropertyException: Unrecognized field "Header"
     @SneakyThrows
     @Test
     public void convertObjectToXML_withBean_Test() {
-        Book actual = TestUtils.getXmlFromClasspath_ConvertToObject(request);
-        String result = ConverterUtils.convertObjectToXML_withBean(TestUtils.createBook());
+        Book object = TestUtils.convertStringToObject(REQUEST);
+        String result = ConverterUtils.convertObjectToXML_withBean(object);
 
-        assertThat(result).isEqualTo(actual);
+        assertThat(result).isEqualTo(REQUEST);
+    }
+
+    /**
+     * Not used -
+     * Gets file from resources as Inputstream and converts to String
+     * Cannot be accessed from a Utility Class (static context)
+     *
+     * @param fileName
+     * @return
+     * @throws IOException
+     */
+    private String getResourceAsInputStream(String fileName) throws IOException {
+        String contents = null;
+        try (InputStream inputStream = getClass().getResourceAsStream(fileName);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            contents = reader.lines()
+                    .collect(Collectors.joining(System.lineSeparator()));
+        }
+        return contents;
     }
 
 }
