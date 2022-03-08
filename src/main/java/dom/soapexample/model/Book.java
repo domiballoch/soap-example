@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Builder(toBuilder = true)
 @Data
@@ -24,5 +25,5 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private BigDecimal price;
-    private int stock;
+    private BigInteger stock;
 }
