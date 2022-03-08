@@ -119,7 +119,7 @@ public class ConverterUtils extends ApplicationContextUtils {
         log.info("Marshalling Object to XML: {}", object);
         StringWriter stringWriter = new StringWriter();
 
-        Marshaller marshallerStatic = applicationContext.getBean(JaxbConfig.class).bookJaxbContext().createMarshaller();
+        Marshaller marshallerStatic = applicationContext.getBean(JaxbConfig.class).jaxbContext().createMarshaller();
         marshallerStatic.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
         marshallerStatic.marshal(object, stringWriter);

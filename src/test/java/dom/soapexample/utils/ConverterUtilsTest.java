@@ -48,14 +48,26 @@ public class ConverterUtilsTest {
         assertThat(result.getTitle()).isEqualTo("Harry Potter");
     }
 
-    @Disabled //TODO:fix-UnrecognizedPropertyException: Unrecognized field "Header"
     @SneakyThrows
     @Test
     public void convertObjectToXML_withBean_Test() {
-        Book object = TestUtils.convertStringToObject(REQUEST);
-        String result = ConverterUtils.convertObjectToXML_withBean(object);
+        GetBookRequest requestObject = TestUtils.convertStringToObject(REQUEST);
+        String result = ConverterUtils.convertObjectToXML_withBean(requestObject);
 
-        assertThat(result).isEqualTo(REQUEST);
+        assertThat(result).isEqualTo(getBookRequestString());
+    }
+
+    /**
+     * Returns getBookResponse object in String form for test
+     *
+     * @return
+     */
+    private String getBookRequestString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        return stringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")
+                .append("\n<getBookRequest xmlns=\"http://www.soap.com/jaxb\">")
+                .append("\n    <title>Harry Potter</title>")
+                .append("\n</getBookRequest>\n").toString();
     }
 
     /**

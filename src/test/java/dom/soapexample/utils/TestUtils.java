@@ -3,7 +3,9 @@ package dom.soapexample.utils;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.soap.jaxb.Book;
 import com.soap.jaxb.Category;
+import com.soap.jaxb.GetBookRequest;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
 
@@ -16,6 +18,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 
+@Slf4j
 @UtilityClass
 public class TestUtils {
 
@@ -101,12 +104,30 @@ public class TestUtils {
      * @return
      * @throws IOException - unhandled for readability (learning purposes)
      */
-    protected Book convertStringToObject(String request) throws IOException {
+    protected GetBookRequest convertStringToObject(String request) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
         String xml = getResourceFile(request);
-        Book value = xmlMapper.readValue(xml, Book.class);
+        //String amendedXml = removeElements(xml);
+        String amendedXml = xml.replace("<soapenv:Header/>", "")
+                .replace("<soapenv:Body>", "")
+                .replace("</soapenv:Body>", "")
+                .replace("<gs:getBookRequest>", "")
+                .replace("</gs:getBookRequest>", "");
+        log.info(amendedXml);
+        GetBookRequest value = xmlMapper.readValue(amendedXml, GetBookRequest.class);
 
         return value;
+    }
+
+    private String removeElements(String xml) {
+        xml.replace("<soapenv:Header/>", "");
+        //amendedXml.replace("<soapenv:Body>", "");
+        //amendedXml.replace("<gs:getBookRequest>", "");
+        //amendedXml.replace("</gs:getBookRequest>", "");
+        //amendedXml.replace("</soapenv:Body>", "");
+        xml.replace("</soapenv:Envelope>", "");
+
+        return xml;
     }
 
 }
