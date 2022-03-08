@@ -107,27 +107,25 @@ public class TestUtils {
     protected GetBookRequest convertStringToObject(String request) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
         String xml = getResourceFile(request);
-        //String amendedXml = removeElements(xml);
-        String amendedXml = xml.replace("<soapenv:Header/>", "")
-                .replace("<soapenv:Body>", "")
-                .replace("</soapenv:Body>", "")
-                .replace("<gs:getBookRequest>", "")
-                .replace("</gs:getBookRequest>", "");
-        log.info(amendedXml);
+        String amendedXml = removeElements(xml);
         GetBookRequest value = xmlMapper.readValue(amendedXml, GetBookRequest.class);
 
         return value;
     }
 
+    /**
+     * Removes unwanted elements from xml to comply with XmlMapper
+     *
+     * @param xml
+     * @return
+     */
     private String removeElements(String xml) {
-        xml.replace("<soapenv:Header/>", "");
-        //amendedXml.replace("<soapenv:Body>", "");
-        //amendedXml.replace("<gs:getBookRequest>", "");
-        //amendedXml.replace("</gs:getBookRequest>", "");
-        //amendedXml.replace("</soapenv:Body>", "");
-        xml.replace("</soapenv:Envelope>", "");
-
-        return xml;
+        String amendedXml = xml.replace("<soapenv:Header/>", "")
+                .replace("<soapenv:Body>", "")
+                .replace("</soapenv:Body>", "")
+                .replace("<gs:getBookRequest>", "")
+                .replace("</gs:getBookRequest>", "");
+        return amendedXml;
     }
 
 }

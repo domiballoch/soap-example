@@ -1,11 +1,9 @@
 package dom.soapexample.utils;
 
-import com.soap.jaxb.Book;
 import com.soap.jaxb.GetBookRequest;
 import dom.soapexample.config.JaxbConfig;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
