@@ -19,9 +19,8 @@ import java.math.BigInteger;
 @ToString(of = {"isbn", "category", "title", "author", "price", "stock"})
 public class Book implements Serializable {
 
-    //for when service is implemented
     private Long isbn;
-    private Category category;
+    private com.soap.jaxb.Category category;
     private String title;
     private String author;
     private BigDecimal price;

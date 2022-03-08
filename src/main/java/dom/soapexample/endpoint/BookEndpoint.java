@@ -1,10 +1,10 @@
 package dom.soapexample.endpoint;
 
+import com.soap.jaxb.Category;
 import com.soap.jaxb.GetBookRequest;
 import com.soap.jaxb.GetBookResponse;
 import dom.soapexample.exception.BookNotFoundException;
 import dom.soapexample.model.Book;
-import dom.soapexample.model.Category;
 import dom.soapexample.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +38,13 @@ public class BookEndpoint {
     @ResponsePayload
     public GetBookResponse processGetBookRequest(@RequestPayload GetBookRequest request) {
         log.info("Received book request: {}", request.getTitle());
-        GetBookResponse response = new GetBookResponse();
         Book book = bookRepository.findBook(request.getTitle());
 
         if (book == null) {
+            log.info("Book not found: {}", request.getTitle());
             throw new BookNotFoundException("Book not found: " + request.getTitle());
         }
-        log.info("Returning book response: {}", response.getBook());
+        log.info("Returning book response: {}", book.toString());
 
         return mapBookSchemaToResponse(book);
     }
@@ -64,12 +64,12 @@ public class BookEndpoint {
     private com.soap.jaxb.Book mapBookPojoToSchema(Book bookPojo) {
         com.soap.jaxb.Book bookSchema = new com.soap.jaxb.Book();
 
-        bookSchema.setIsbn(bookPojo.getIsbn());
+        //bookSchema.setIsbn(bookPojo.getIsbn());
         bookSchema.setTitle(bookPojo.getTitle());
         bookSchema.setAuthor(bookPojo.getAuthor());
-        //bookSchema.setCategory(bookPojo.getCategory());
+        bookSchema.setCategory(bookPojo.getCategory());
         bookSchema.setPrice(bookPojo.getPrice());
-        bookSchema.setStock(bookPojo.getStock());
+        //bookSchema.setStock(bookPojo.getStock());
 
         return bookSchema;
     }

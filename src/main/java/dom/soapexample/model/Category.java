@@ -12,7 +12,7 @@ public enum Category {
     HORROR("HORR"),
     ROMANCE("ROM"),
     SCIENCE_FICTION("SCIFI"),
-    FANTASY("FANT"),;
+    FANTASY("FANT");
 
     private String abbreviation;
 

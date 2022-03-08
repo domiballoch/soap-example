@@ -1,7 +1,7 @@
 package dom.soapexample.repository;
 
 import dom.soapexample.model.Book;
-import dom.soapexample.model.Category;
+
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -15,84 +15,88 @@ import java.util.stream.Collectors;
 @Component
 public class BookRepository {
 
-    public static final Map<String, Book> books = new HashMap<>();
+    private static final Map<String, Book> books = new HashMap<>();
+
+    public enum Status {
+        SUCCESS, FAILURE;
+    }
 
     /**
      * Dummy repo data
      */
     @PostConstruct
     public void initData() {
-        Book book1 = new Book();
-        book1.setTitle("1984");
-        book1.setAuthor("George Orwell");
-        book1.setCategory(Category.FICTION);
-        book1.setPrice(new BigDecimal("5.99"));
+        Book book1 = Book.builder()
+                .title("1984")
+                .author("George Orwell")
+                .category(com.soap.jaxb.Category.FICTION)
+                .price(new BigDecimal("5.99")).build();
 
-        Book book2 = new Book();
-        book1.setTitle("Harry Potter");
-        book1.setAuthor("J.K. Rowling");
-        book1.setCategory(Category.FANTASY);
-        book1.setPrice(new BigDecimal("4.50"));
+        Book book2 = Book.builder()
+                .title("Harry Potter")
+                .author("J.K. Rowling")
+                .category(com.soap.jaxb.Category.FANTASY)
+                .price(new BigDecimal("4.50")).build();
 
-        Book book3 = new Book();
-        book1.setTitle("The Lord of the Rings");
-        book1.setAuthor("J.R.R. Tolkien");
-        book1.setCategory(Category.FANTASY);
-        book1.setPrice(new BigDecimal("16.33"));
+        Book book3 = Book.builder()
+                .title("The Lord of the Rings")
+                .author("J.R.R. Tolkien")
+                .category(com.soap.jaxb.Category.FANTASY)
+                .price(new BigDecimal("16.33")).build();
 
-        Book book4 = new Book();
-        book1.setTitle("The Lion, The Witch, and the Wardrobe");
-        book1.setAuthor("C.S. Lewis");
-        book1.setCategory(Category.KIDS);
-        book1.setPrice(new BigDecimal("6.99"));
+        Book book4 = Book.builder()
+                .title("The Lion, The Witch, and the Wardrobe")
+                .author("C.S. Lewis")
+                .category(com.soap.jaxb.Category.KIDS)
+                .price(new BigDecimal("6.99")).build();
 
-        Book book5 = new Book();
-        book1.setTitle("To Kill a Mockingbird");
-        book1.setAuthor("Harper Lee");
-        book1.setCategory(Category.FICTION);
-        book1.setPrice(new BigDecimal("6.55"));
+        Book book5 = Book.builder()
+                .title("To Kill a Mockingbird")
+                .author("Harper Lee")
+                .category(com.soap.jaxb.Category.FICTION)
+                .price(new BigDecimal("6.55")).build();
 
-        Book book6 = new Book();
-        book1.setTitle("Wuthering Heights");
-        book1.setAuthor("Emily Bronte");
-        book1.setCategory(Category.ROMANCE);
-        book1.setPrice(new BigDecimal("2.25"));
+        Book book6 = Book.builder()
+                .title("Wuthering Heights")
+                .author("Emily Bronte")
+                .category(com.soap.jaxb.Category.ROMANCE)
+                .price(new BigDecimal("2.25")).build();
 
-        Book book7 = new Book();
-        book1.setTitle("Frankenstein");
-        book1.setAuthor("Mary Shelley");
-        book1.setCategory(Category.HORROR);
-        book1.setPrice(new BigDecimal("5.39"));
+        Book book7 = Book.builder()
+                .title("Frankenstein")
+                .author("Mary Shelley")
+                .category(com.soap.jaxb.Category.HORROR)
+                .price(new BigDecimal("5.39")).build();
 
-        Book book8 = new Book();
-        book1.setTitle("Charlotte's Web");
-        book1.setAuthor("E.B. White");
-        book1.setCategory(Category.KIDS);
-        book1.setPrice(new BigDecimal("5.94"));
+        Book book8 = Book.builder()
+                .title("Charlotte's Web")
+                .author("E.B. White")
+                .category(com.soap.jaxb.Category.KIDS)
+                .price(new BigDecimal("5.94")).build();
 
-        Book book9 = new Book();
-        book1.setTitle("Of Mice and Men");
-        book1.setAuthor("John Stienbeck");
-        book1.setCategory(Category.FICTION);
-        book1.setPrice(new BigDecimal("5.99"));
+        Book book9 = Book.builder()
+                .title("Of Mice and Men")
+                .author("John Stienbeck")
+                .category(com.soap.jaxb.Category.FICTION)
+                .price(new BigDecimal("5.99")).build();
 
-        Book book10 = new Book();
-        book1.setTitle("The Hitchhikers Guide to the Galaxy");
-        book1.setAuthor("Douglas Adams");
-        book1.setCategory(Category.SCIENCE_FICTION);
-        book1.setPrice(new BigDecimal("4.99"));
+        Book book10 = Book.builder()
+                .title("The Hitchhikers Guide to the Galaxy")
+                .author("Douglas Adams")
+                .category(com.soap.jaxb.Category.SCIENCE_FICTION)
+                .price(new BigDecimal("4.99")).build();
 
-        Book book11 = new Book();
-        book1.setTitle("The Great Gatsby");
-        book1.setAuthor("F. Scott Fitzgerald");
-        book1.setCategory(Category.FICTION);
-        book1.setPrice(new BigDecimal("6.99"));
+        Book book11 = Book.builder()
+                .title("The Great Gatsby")
+                .author("F. Scott Fitzgerald")
+                .category(com.soap.jaxb.Category.FICTION)
+                .price(new BigDecimal("6.99")).build();
 
-        Book book12 = new Book();
-        book1.setTitle("Little Women");
-        book1.setAuthor("Louisa May Alcott");
-        book1.setCategory(Category.FICTION);
-        book1.setPrice(new BigDecimal("8.77"));
+        Book book12 = Book.builder()
+                .title("Little Women")
+                .author("Louisa May Alcott")
+                .category(com.soap.jaxb.Category.FICTION)
+                .price(new BigDecimal("8.77")).build();
 
         books.put(book1.getTitle(), book1);
         books.put(book2.getTitle(), book2);
