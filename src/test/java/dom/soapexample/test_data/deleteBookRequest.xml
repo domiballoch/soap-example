@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:gs="http://www.soap.com/jaxb">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <gs:deleteBookRequest>
+            <gs:isbn>1</gs:isbn>
+        </gs:deleteBookRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

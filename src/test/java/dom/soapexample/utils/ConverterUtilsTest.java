@@ -26,9 +26,9 @@ public class ConverterUtilsTest {
     @Autowired
     private ConverterUtils converterUtils;
 
-    private static final String REQUEST = "classpath:bookRequest.xml";
+    private static final String REQUEST = "classpath:getBookRequest.xml";
 
-    @Value(value = "classpath:bookRequest.xml")
+    @Value(value = "classpath:getBookRequest.xml")
     private Resource request;
 
     @BeforeEach

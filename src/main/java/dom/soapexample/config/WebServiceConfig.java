@@ -18,7 +18,7 @@ import java.util.List;
 
 @EnableWs
 @Configuration
-public class WebServiceConfig extends WsConfigurerAdapter{
+public class WebServiceConfig extends WsConfigurerAdapter {
 
     @Bean
     public ServletRegistrationBean messageDispatcherServlet(ApplicationContext context) {

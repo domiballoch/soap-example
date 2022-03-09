@@ -37,14 +37,14 @@ public class BookEndpoint {
     }
 
     /**
-     * Accept soap request and return the soap response
+     * Accept soap request for getBookRequest and return the soap response
      *
      * @param request
      * @return respone
      */
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getBookRequest")
     @ResponsePayload
-    public GetBookResponse processGetBookRequest(@RequestPayload GetBookRequest request) {
+    public GetBookResponse getBookRequest(@RequestPayload GetBookRequest request) {
         log.info("Received book request: {}", request.getTitle());
         Book book = bookService.findBook(request.getTitle());
 
@@ -57,12 +57,24 @@ public class BookEndpoint {
         return mapBookSchemaToResponse(book);
     }
 
+    /**
+     * Maps book schema to response object
+     *
+     * @param book
+     * @return
+     */
     private GetBookResponse mapBookSchemaToResponse(Book book) {
         GetBookResponse response = new GetBookResponse();
         response.setBook(mapBookPojoToSchema(book));
         return response;
     }
 
+    /**
+     * Maps book pojo to schema
+     *
+     * @param bookPojo
+     * @return
+     */
     private com.soap.jaxb.Book mapBookPojoToSchema(Book bookPojo) {
         com.soap.jaxb.Book bookSchema = new com.soap.jaxb.Book();
 
@@ -76,15 +88,28 @@ public class BookEndpoint {
         return bookSchema;
     }
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetAllBooksRequest")
+    /**
+     * Accept soap request for getAllBooksRequest and return the soap response
+     *
+     * @param request
+     * @return
+     */
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllBooksRequest")
     @ResponsePayload
     public GetAllBooksResponse getAllBooksRequest(@RequestPayload GetAllBooksRequest request) {
+        log.info("Received find all books request");
         List<Book> books = bookService.findAllBooks();
 
+        log.info("Returning find all books response");
         return mapAllBooks(books);
     }
 
-
+    /**
+     * Maps all books from schema to response object
+     *
+     * @param books
+     * @return
+     */
     private GetAllBooksResponse mapAllBooks(List<Book> books) {
         GetAllBooksResponse response = new GetAllBooksResponse();
         for (Book book : books) {
@@ -94,23 +119,35 @@ public class BookEndpoint {
         return response;
     }
 
-    @PayloadRoot(namespace = "NAMESPACE_URI", localPart = "DeleteBookRequest")
+    /**
+     * Accept soap request for deleteBookRequest and return the soap response
+     *
+     * @param request
+     * @return
+     */
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteBookRequest")
     @ResponsePayload
     public DeleteBookResponse deleteBookRequest(@RequestPayload DeleteBookRequest request) {
-
+        log.info("Received delete book request: {}", request.getIsbn());
         Status status = bookService.deleteBookByIsbn(request.getIsbn());
 
         DeleteBookResponse response = new DeleteBookResponse();
         response.setStatus(mapStatus(status));
 
+        log.info("Returning delete book request: {}", request.getIsbn() + " " + status);
         return response;
     }
 
+    /**
+     * Maps status enum of delete status
+     *
+     * @param status
+     * @return
+     */
     private com.soap.jaxb.Status mapStatus(Status status) {
        return status == Status.FAILURE ? com.soap.jaxb.Status.FAILURE : com.soap.jaxb.Status.SUCCESS;
     }
 
-    //TODO:add findAll & delete requests
     //TODO:add xml validation for request
     //TODO:add update book?
     //TODO:fix security
