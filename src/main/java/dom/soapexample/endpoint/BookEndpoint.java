@@ -1,11 +1,17 @@
 package dom.soapexample.endpoint;
 
-import com.soap.jaxb.Category;
+import com.soap.jaxb.DeleteBookRequest;
+import com.soap.jaxb.DeleteBookResponse;
+import com.soap.jaxb.GetAllBooksRequest;
+import com.soap.jaxb.GetAllBooksResponse;
 import com.soap.jaxb.GetBookRequest;
 import com.soap.jaxb.GetBookResponse;
+
 import dom.soapexample.exception.BookNotFoundException;
 import dom.soapexample.model.Book;
+import dom.soapexample.model.Status;
 import dom.soapexample.repository.BookRepository;
+import dom.soapexample.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -21,10 +27,12 @@ public class BookEndpoint {
 
     private static final String NAMESPACE_URI = "http://www.soap.com/jaxb";
 
+    private final BookService bookService;
     private final BookRepository bookRepository;
 
     @Autowired
-    public BookEndpoint(BookRepository bookRepository) {
+    public BookEndpoint(BookService bookService, BookRepository bookRepository) {
+        this.bookService = bookService;
         this.bookRepository = bookRepository;
     }
 
@@ -38,7 +46,7 @@ public class BookEndpoint {
     @ResponsePayload
     public GetBookResponse processGetBookRequest(@RequestPayload GetBookRequest request) {
         log.info("Received book request: {}", request.getTitle());
-        Book book = bookRepository.findBook(request.getTitle());
+        Book book = bookService.findBook(request.getTitle());
 
         if (book == null) {
             log.info("Book not found: {}", request.getTitle());
@@ -49,12 +57,6 @@ public class BookEndpoint {
         return mapBookSchemaToResponse(book);
     }
 
-    //add xml validation for request
-    //add get all books, create, delete and update
-    //add service class
-    //fix security
-    //add tests
-
     private GetBookResponse mapBookSchemaToResponse(Book book) {
         GetBookResponse response = new GetBookResponse();
         response.setBook(mapBookPojoToSchema(book));
@@ -64,50 +66,53 @@ public class BookEndpoint {
     private com.soap.jaxb.Book mapBookPojoToSchema(Book bookPojo) {
         com.soap.jaxb.Book bookSchema = new com.soap.jaxb.Book();
 
-        //bookSchema.setIsbn(bookPojo.getIsbn());
+        bookSchema.setIsbn(bookPojo.getIsbn());
         bookSchema.setTitle(bookPojo.getTitle());
         bookSchema.setAuthor(bookPojo.getAuthor());
         bookSchema.setCategory(bookPojo.getCategory());
         bookSchema.setPrice(bookPojo.getPrice());
-        //bookSchema.setStock(bookPojo.getStock());
+        bookSchema.setStock(bookPojo.getStock());
 
         return bookSchema;
     }
 
-//    private GetAllBooksResponse mapAllBooks(List<Book> books) {
-//        GetAllBooksResponse response = new GetAllBooksResponse();
-//        for (Book book : books) {
-//            com.soap.jaxb.Book mapBook = mapBook(book);
-//            response.com.soap.jaxb.getBook().add(mapBook);
-//        }
-//        return response;
-//    }
-//
-//    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetAllBooksRequest")
-//    @ResponsePayload
-//    public GetAllBooksResponse processGetAllBooksRequest(
-//            @RequestPayload GetAllBooksRequest request) {
-//
-//        List<Book> books = service.findAllBooks();
-//
-//        return mapAllBooks(books);
-//    }
-//
-//    @PayloadRoot(namespace = "NAMESPACE_URI", localPart = "DeleteBookRequest")
-//    @ResponsePayload
-//    public DeleteBookResponse deleteBookRequest(@RequestPayload DeleteBookRequest request) {
-//
-//        Status status = service.deleteByIsbn(request.getIsbn());
-//
-//        DeleteBookResponse response = new DeleteBookResponse();
-//        response.setStatus(mapStatus(status));
-//
-//        return response;
-//    }
-//
-//    private Status mapStatus(Status status) {
-//        if (status == Status.FAILURE)
-//            return Status.FAILURE;
-//        return Status.SUCCESS;
-//    }
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetAllBooksRequest")
+    @ResponsePayload
+    public GetAllBooksResponse getAllBooksRequest(@RequestPayload GetAllBooksRequest request) {
+        List<Book> books = bookService.findAllBooks();
+
+        return mapAllBooks(books);
+    }
+
+
+    private GetAllBooksResponse mapAllBooks(List<Book> books) {
+        GetAllBooksResponse response = new GetAllBooksResponse();
+        for (Book book : books) {
+            com.soap.jaxb.Book mappedBook = mapBookPojoToSchema(book);
+            response.getBook().add(mappedBook);
+        }
+        return response;
+    }
+
+    @PayloadRoot(namespace = "NAMESPACE_URI", localPart = "DeleteBookRequest")
+    @ResponsePayload
+    public DeleteBookResponse deleteBookRequest(@RequestPayload DeleteBookRequest request) {
+
+        Status status = bookService.deleteBookByIsbn(request.getIsbn());
+
+        DeleteBookResponse response = new DeleteBookResponse();
+        response.setStatus(mapStatus(status));
+
+        return response;
+    }
+
+    private com.soap.jaxb.Status mapStatus(Status status) {
+       return status == Status.FAILURE ? com.soap.jaxb.Status.FAILURE : com.soap.jaxb.Status.SUCCESS;
+    }
+
+    //TODO:add findAll & delete requests
+    //TODO:add xml validation for request
+    //TODO:add update book?
+    //TODO:fix security
+    //TODO:add more tests
 }

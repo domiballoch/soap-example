@@ -25,7 +25,7 @@
             <xs:element name="author" type="xs:string"/>
             <xs:element name="category" type="tns:category"/>
             <xs:element name="price" type="xs:decimal"/>
-            <xs:element name="stock" type="xs:integer"/>
+            <xs:element name="stock" type="xs:int"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -37,6 +37,43 @@
             <xs:enumeration value="KIDS"/>
             <xs:enumeration value="ROMANCE"/>
             <xs:enumeration value="SCIENCE_FICTION"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="getAllBooksRequest">
+        <xs:complexType>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllBooksResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="book" type="tns:book"
+                            maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteBookRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="isbn" type="xs:long" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteBookResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:status" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="status">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SUCCESS" />
+            <xs:enumeration value="FAILURE" />
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

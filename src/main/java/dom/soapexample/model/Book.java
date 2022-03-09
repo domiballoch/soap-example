@@ -24,5 +24,5 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private BigDecimal price;
-    private BigInteger stock;
+    private int stock;
 }
