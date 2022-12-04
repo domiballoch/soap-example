@@ -1,6 +1,5 @@
 package dom.soapexample.utils;
 
-import dom.soapexample.config.JaxbConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,17 +22,25 @@ public class ConverterUtils extends ApplicationContextUtils {
 
     //----- METHODS USING JAXB CONTEXT BEAN -----//
 
+    //Using qualifier if needed
     @Qualifier("book") //Using qualifier
     @Autowired
     private JAXBContext bookJaxbContext;
 
-    @Autowired
-    private JAXBContext jaxbContext;
+    //Using Bean with multiple Objects
+    private static JAXBContext jaxbContext;
+
+    public ConverterUtils(JAXBContext jaxbContext) {
+        ConverterUtils.jaxbContext = jaxbContext;
+    }
 
     public static <T> T convertXMLToObject_withBean(String xml) throws JAXBException, SOAPException, IOException {
         log.info("Unmarshalling XML to Object: ", xml);
         SOAPMessage message = MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(xml.getBytes()));
-        Unmarshaller unmarshallerStatic = applicationContext.getBean(JaxbConfig.class).jaxbContext().createUnmarshaller();
+        //Using constructor injection - preferred!
+        Unmarshaller unmarshallerStatic = jaxbContext.createUnmarshaller();
+        //Using app context - not recommended!
+        //Unmarshaller unmarshallerStatic = getApplicationContext().getBean(JaxbConfig.class).jaxbContext().createUnmarshaller();
         Object object = unmarshallerStatic.unmarshal(message.getSOAPBody().extractContentAsDocument());
         log.info("Unmarshalled XML as Object: {}", object);
         return (T) object;
@@ -42,10 +49,11 @@ public class ConverterUtils extends ApplicationContextUtils {
     public static <T> String convertObjectToXML_withBean(T object) throws JAXBException {
         log.info("Marshalling Object to XML: {}", object);
         StringWriter stringWriter = new StringWriter();
-
-        Marshaller marshallerStatic = applicationContext.getBean(JaxbConfig.class).jaxbContext().createMarshaller();
+        //Using constructor injection - preferred!
+        Marshaller marshallerStatic = jaxbContext.createMarshaller();
+        //Using app context - not recommended!
+        //Marshaller marshallerStatic = getApplicationContext().getBean(JaxbConfig.class).jaxbContext().createMarshaller();
         marshallerStatic.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
         marshallerStatic.marshal(object, stringWriter);
         log.info("Marshalled Object as String: {}", stringWriter.toString());
         return stringWriter.toString();

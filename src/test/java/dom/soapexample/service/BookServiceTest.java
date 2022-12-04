@@ -30,7 +30,7 @@ public class BookServiceTest {
     @Test
     public void shouldFindAllBooksBy() {
         final List<Book> result = bookService.findAllBooks();
-        assertThat(result.size()).isEqualTo(12);
+        assertThat(result).hasSize(12);
     }
 
     @Test

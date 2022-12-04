@@ -28,7 +28,7 @@ public class JaxbConfigTest {
         }
         assertThat(beans).isNotNull()
                 .contains("book")
-                .contains("jaxbContext");
-        assertThat(beans.size()).isEqualTo(2);
+                .contains("jaxbContext")
+                .hasSize(2);
     }
 }

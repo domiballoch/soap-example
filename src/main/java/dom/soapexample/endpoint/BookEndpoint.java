@@ -6,14 +6,12 @@ import com.soap.jaxb.GetAllBooksRequest;
 import com.soap.jaxb.GetAllBooksResponse;
 import com.soap.jaxb.GetBookRequest;
 import com.soap.jaxb.GetBookResponse;
-
 import dom.soapexample.exception.BookNotFoundException;
 import dom.soapexample.model.Book;
 import dom.soapexample.model.Status;
 import dom.soapexample.repository.BookRepository;
 import dom.soapexample.service.BookService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -28,12 +26,9 @@ public class BookEndpoint {
     private static final String NAMESPACE_URI = "http://www.soap.com/jaxb";
 
     private final BookService bookService;
-    private final BookRepository bookRepository;
 
-    @Autowired
-    public BookEndpoint(BookService bookService, BookRepository bookRepository) {
+    public BookEndpoint(BookService bookService) {
         this.bookService = bookService;
-        this.bookRepository = bookRepository;
     }
 
     /**

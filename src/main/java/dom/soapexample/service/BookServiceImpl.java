@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAllBooks() {
         return BookRepository.books.entrySet().stream()
-                .map(book -> book.getValue()).collect(Collectors.toList());
+                .map(Map.Entry::getValue).collect(Collectors.toList());
     }
 
     /**
@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Status deleteBookByIsbn(Long isbn) {
         for (Map.Entry<String, Book> entry : BookRepository.books.entrySet()) {
-            if (entry.getValue().getIsbn() == isbn) {
+            if (entry.getValue().getIsbn().equals(isbn)) {
                 BookRepository.books.remove(entry);
                 return Status.SUCCESS;
             }
