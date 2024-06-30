@@ -82,6 +82,17 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<version>2.13.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformats-text</artifactId>
+			<version>2.13.0</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.13.0</version>
+		</dependency>
 
 		<!-- other dependencies that may be needed later -->
 		<!--<dependency>
